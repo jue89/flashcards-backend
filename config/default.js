@@ -16,9 +16,7 @@ module.exports.factory = function( fs ) { return {
 	https: {
 		key: fs.readFileSync( __dirname + '/../pki/test_server.key' ),
 		cert: fs.readFileSync( __dirname + '/../pki/test_server.crt' ),
-		ca: fs.readFileSync( __dirname + '/../pki/test_ca.crt' ),
-		requestCert: true,
-		rejectUnauthorized: true
+		ca: fs.readFileSync( __dirname + '/../pki/test_ca.crt' )
 	},
 	cors: {
 		origin: /.*/
@@ -29,6 +27,6 @@ module.exports.factory = function( fs ) { return {
 			port: 27017,
 			options: { auto_reconnnect: true }
 		} ],
-		db: 'jmf'
+		db: 'flashcards'
 	}
 }; };
