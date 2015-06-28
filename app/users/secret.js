@@ -1,13 +1,16 @@
 // Fire me up!
 
 module.exports = {
-	implements: 'auth',
-	inject: [ 'require(bluebird)', 'require(crypto)', 'auth/error' ]
+	implements: 'secret',
+	inject: [ 'require(bluebird)', 'require(crypto)' ]
 };
 
-module.exports.factory = function( P, crypto, AuthError ) {
+module.exports.factory = function( P, crypto ) {
 
-	return { gen: gen, check: check, require: require, reject: reject };
+	return {
+		gen: gen,
+		check: check
+	};
 
 	// Salt given password
 	function salt( password, salt ) {
@@ -58,23 +61,4 @@ module.exports.factory = function( P, crypto, AuthError ) {
 
 	}
 
-	// Require auth
-	function require() {
-
-		return P.reject( new AuthError(
-			'access-denied',
-			"Username and password are required."
-		) );
-
-	}
-
-	// Reject auth
-	function reject() {
-
-		return P.reject( new AuthError(
-			'access-denied',
-			"Wrong password or username."
-		) );
-
-	}
 }

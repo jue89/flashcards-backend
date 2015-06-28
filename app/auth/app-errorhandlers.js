@@ -12,12 +12,13 @@ module.exports.factory = function( AuthError ) { return {
 
 		// Authorisation error
 		app.use( function( err, req, res, next ) {
+
 			if( ! (err instanceof AuthError) ) return next( err );
 
-			res.setHeader(
+			/*res.setHeader(
 				'WWW-Authenticate',
 				'Basic realm="Authorisation Required"'
-			);
+			);*/
 			res.endJSONapiError( 401, err.type, err.message );
 
 		} );

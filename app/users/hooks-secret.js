@@ -2,10 +2,10 @@
 
 module.exports = {
 	implements: 'hook:users-secret',
-	inject: [ 'auth' ]
+	inject: [ 'secret' ]
 };
 
-module.exports.factory = function( auth ) { return {
+module.exports.factory = function( secret ) { return {
 
 	users: {
 
@@ -14,7 +14,7 @@ module.exports.factory = function( auth ) { return {
 
 				// If password is given, hash it
 				if( query.req.secret ) {
-					return auth.gen( query.req.secret ).then( function( ssh1 ) {
+					return secret.gen( query.req.secret ).then( function( ssh1 ) {
 						query.req.secret = ssh1;
 					} ).return( query );
 				} else {
@@ -29,7 +29,7 @@ module.exports.factory = function( auth ) { return {
 
 				// If new password is given, hash it
 				if( query.req.modifier['$set'].secret ) {
-					return auth.gen( query.req.modifier['$set'].secret ).then( function( ssh1 ) {
+					return secret.gen( query.req.modifier['$set'].secret ).then( function( ssh1 ) {
 						query.req.modifier['$set'].secret = ssh1;
 					} ).return( query );
 				} else {
