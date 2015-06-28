@@ -7,52 +7,52 @@ module.exports = {
 
 module.exports.factory = function( auth ) {
 
-  // This will hide boxes of other users
+	// This will hide boxes of other users
 	function restrictUser( query ) {
 
 		// Modify query selector
-    query.req.selector = { '$and': [
-      query.req.selector,
-      { 'user': query.user }
-    ] };
+		query.req.selector = { '$and': [
+			query.req.selector,
+			{ 'user': query.user }
+		] };
 
-    return query;
+		return query;
 
 	}
 
-  // This will affect boxes that might be shown by the include field
-  function removeForeignBoxes( q ) {
+	// This will affect boxes that might be shown by the include field
+	function removeForeignBoxes( q ) {
 
-    var items = q.items;
+		var items = q.items;
 
-    // Iterate through all items
-    for( var i = items.length - 1; i >= 0; i-- ) {
+		// Iterate through all items
+		for( var i = items.length - 1; i >= 0; i-- ) {
 
-      // If querying  user is not the owner remove it
-      if( items[ i ].user != q.query.user ) {
-        items.splice( i, 1 );
-      }
+			// If querying  user is not the owner remove it
+			if( items[ i ].user != q.query.user ) {
+				items.splice( i, 1 );
+			}
 
-    }
+		}
 
-    return q;
+		return q;
 
-  }
+	}
 
-  function checkInsertUser( query ) {
+	function checkInsertUser( query ) {
 
-    if( query.req.user != query.user ) {
-      return auth.reject();
-    }
+		if( query.req.user != query.user ) {
+			return auth.reject();
+		}
 
-    return query;
+		return query;
 
-  }
+	}
 
 
 	return { boxes: {
 
-    preInsert: {
+		preInsert: {
 			priority: 1,
 			action: checkInsertUser
 		},
@@ -62,20 +62,20 @@ module.exports.factory = function( auth ) {
 			action: restrictUser
 		},
 
-    preFetch: {
-      priority: 1,
+		preFetch: {
+			priority: 1,
 			action: restrictUser
-    },
+		},
 
 		preDrop: {
 			priority: 1,
 			action: restrictUser
 		},
 
-    itemFilter: {
-      priotrity: 1,
-      action: removeForeignBoxes
-    }
+		itemFilter: {
+			priotrity: 1,
+			action: removeForeignBoxes
+		}
 
 	} };
 
